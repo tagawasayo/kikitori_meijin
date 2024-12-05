@@ -1,0 +1,12 @@
+# Python仮想環境を無視
+myenv/
+venv/
+
+# キャッシュファイル
+__pycache__/
+*.pyc
+
+# 大きなライブラリファイルを無視
+*.dylib
+myenv/
+*.dylib

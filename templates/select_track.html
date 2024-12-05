@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>音源選択</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #174397;
+            color: #333;
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        .button-container form {
+            display: inline-block;
+        }
+        .button-container button {
+            width: 80px;
+            height: 80px;
+            background-color: #fff;  /* 初期状態は白 */
+            color: #FE5458;  /* テキスト色 */
+            font-size: 1em;
+            border: 2px solid #FE5458;  /* ボーダー色 */
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;  /* トランジション効果 */
+        }
+        .button-container button:hover {
+            background-color: #FE5458;  /* ホバー時の背景色 */
+            color: #fff;  /* ホバー時のテキスト色 */
+        }
+        .no-files {
+            color: #666;
+        }
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .explanation-button {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        .explanation-button:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- 戻るリンク -->
+    <span class="back-link" onclick="history.back()">&lt; 戻る</span>
+
+    <div class="container">
+        <h1>再生する音源を選択してください</h1>
+        <div class="button-container">
+            {% if stems and stems|length > 0 %}
+                {% for stem in stems %}
+                    <form action="{{ url_for('select_track') }}" method="POST">
+                        <input type="hidden" name="stem_name" value="{{ stem }}">
+                        <button type="submit">{{ stem.split('.')[0] }}</button>
+                    </form>
+                {% endfor %}
+            {% else %}
+                <p class="no-files">分離された音源ファイルが見つかりませんでした。</p>
+            {% endif %}
+        </div>
+    </div>
+    <a href="{{ url_for('explanation') }}" class="explanation-button">使い方説明</a>
+</body>
+</html>

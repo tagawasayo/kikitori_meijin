@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>音声アップロード</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #174397;
+            color: #333;
+            flex-direction: column; /* 縦方向に並べる */
+        }
+        .title {
+            font-size: 7em; /* タイトルのフォントサイズを大きく */
+            margin-bottom: 20px; /* タイトルとフォームの間にスペース */
+            color: white; /* タイトルの色を白に */
+            /* 位置調整のためのプロパティ */
+            margin-top: -30px; /* 上からの位置調整 */
+            text-align: center; /* 中央揃え */
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        h1 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input[type="file"] {
+            margin: 10px 0 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            background-color: #fff;
+            color: #333;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        input[type="submit"] {
+            background-color: #FE5458;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1em;
+            color: #fff;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-left: 20px; /* ボタン間のスペースを調整 */
+        }
+        input[type="submit"]:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px; /* ボタンの上側のスペースはそのまま */
+        }
+        a {
+            display: inline-block;
+            padding: 12px 20px;
+            background-color: #174397;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 1em;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        a:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+        .loading {
+            display: none;
+            text-align: center; /* テキストを中央揃え */
+            position: absolute;
+            top: 60%; /* 縦の中央から60%の位置に移動 */
+            left: 50%; /* 横の中央に配置 */
+            transform: translate(-50%, -50%); /* 位置を調整して中央にする */
+        }
+        .loading-container {
+            background-color: #fff; /* 背景を白に設定 */
+            border-radius: 8px; /* 角を丸める */
+            padding: 20px; /* 内側のスペースを設定 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 影を追加 */
+            display: inline-block; /* 横幅を自動調整 */
+            margin-top: 20px; /* メッセージとスピナーの間にスペース */
+        }
+        .loading-message {
+            font-size: 1.2em;
+            margin-bottom: 20px; /* スピナーとの間のスペース */
+        }
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #FE5458;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto; /* スピナーを中央に配置 */
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .explanation-button {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        .explanation-button:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title">聞き取り名人</h1>
+    <div class="container">
+        <h1>音声ファイルをアップロードしてください</h1>
+        <form action="/upload" method="post" enctype="multipart/form-data" onsubmit="showLoading()">
+            <input type="file" name="audio_file" accept="audio/*" required>
+            <div class="button-container">
+                <a href="/playlist" id="playlist-button">再生リスト</a>
+                <input type="submit" value="アップロード">
+            </div>
+        </form>
+        <div class="loading" id="loading">
+            <div class="loading-container">
+                <div class="loading-message">ロード中です。お待ちください...</div>
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function showLoading() {
+            document.querySelector('input[type="file"]').style.display = 'none';
+            document.querySelector('input[type="submit"]').style.display = 'none';
+            document.getElementById('playlist-button').style.display = 'none'; // 再生リストボタンを隠す
+            document.getElementById('loading').style.display = 'block';
+        }
+    </script>
+    <a href="{{ url_for('explanation') }}" class="explanation-button">使い方説明</a>
+</body>
+</html>
